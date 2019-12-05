@@ -14,15 +14,20 @@ class Sketcher:
 
     def show(self):
         cv.imshow(self.windowname, self.dests[0])
-        cv.imshow(self.windowname, ": Mask", self.dests[1])
+        cv.imshow(self.windowname+": Mask", self.dests[1])
 
-    def mouse_on(self):
+    def mouse_on(self, event, x, y, flags, param):
         pt=(x,y)
         if event==cv.EVENT_LBUTTONDOWN:
             self.prev_pt=pt
         elif event==cv.EVENT_LBUTTONUP:
             self.prev_pt=None
-        if self.prev_pt and flags &
+        if self.prev_pt and flags & cv.EVENT_FLAG_LBUTTON:
+            for dst, color in zip(self.dests, self.colors_func()):
+                cv.line(dst,self.prev_pt, pt, color, 5)
+                self.dirty=True
+                self.prev_pt=pt
+                self.show()
 
 def main():
     print("Usage: Python Inpaint")
@@ -37,7 +42,7 @@ def main():
     img=cv.read("doge.jpg", cv.IMREAD_COLOR)
 
     if img is None:
-        print("Failed to load the file {}".format(args["image"]))
+        print("Failed to load the file {}".format(img))
         return
     img_mask=img.copy()
 
