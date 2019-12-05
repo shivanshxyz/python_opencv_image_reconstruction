@@ -25,9 +25,9 @@ class Sketcher:
         if self.prev_pt and flags & cv.EVENT_FLAG_LBUTTON:
             for dst, color in zip(self.dests, self.colors_func()):
                 cv.line(dst,self.prev_pt, pt, color, 5)
-                self.dirty=True
-                self.prev_pt=pt
-                self.show()
+            self.dirty=True
+            self.prev_pt=pt
+            self.show()
 
 def main():
     print("Usage: Python Inpaint")
@@ -56,10 +56,10 @@ def main():
         if ch==27:
             break
         if ch==ord('t'):
-            res=cv.inpaint(src=img_mask,inpaintMask=inpaintMask, inpaintRadius=3, flags=cv.INPAINT_TELEA)
+            res=cv.inpaint(src=img_mask,inpaintMask=inpaintMask, inpaintRadius=3, flags=cv.INPAINT_TELEA)  #inpaintMask in LHS and RHS are both different things
             cv.imshow("Inpaint using FMM",res)
         if ch==ord('n'):
-            res=cv.inpaint(src=img_mask,inpaintMask=inpaintMask, inpaintRadius=3, flags=cv.INPAINT_TELEA)
+            res=cv.inpaint(src=img_mask,inpaintMask=inpaintMask, inpaintRadius=3, flags=cv.INPAINT_NS)
             cv.imshow("Inpaint using NS",res)
         if ch==ord('r'):
             img_mask[:]=img
